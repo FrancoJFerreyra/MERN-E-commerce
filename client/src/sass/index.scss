@@ -1,0 +1,79 @@
+@import './customBS/bootstrap.scss';
+
+html,
+body,
+#root {
+	height: 100%;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+}
+
+//HEADER
+.logout__btn {
+	display: none;
+}
+
+//HOME
+
+.center__spinner {
+	height: 100%;
+}
+
+.home__container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.home__container--productsList {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.productsList__container {
+	flex: 1;
+}
+
+.addProduct__icon {
+	font-size: 3rem;
+	color: black;
+	&:hover {
+		color: green;
+	}
+}
+
+//PROFILE
+.profile__container {
+	height: 100%;
+	ul {
+		list-style-type: none;
+	}
+}
+
+.loginComponent__container {
+	h1 {
+		padding-top: 2rem;
+		padding-bottom: 1rem;
+	}
+	h2 {
+		padding-bottom: 2rem;
+	}
+}
+
+.productList__item--container {
+	margin: 0;
+	width: 100%;
+}
+
+@include media-breakpoint-up(lg) {
+	.logout__btn {
+		display: block;
+	}
+	.logout__btn--mobile {
+		display: none;
+	}
+}
