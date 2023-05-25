@@ -1,63 +1,26 @@
-import { useState, useEffect } from 'react';
-import Header from './Header';
-import { useNavigate, Link } from 'react-router-dom';
-import serverRequest from '../api/serverRequest';
-import HomeContent from './HomeContent';
+import Header from "./Header";
+import HomeContent from "./HomeContent";
+import Unauthorized from "./Unauthorized";
+import useFetch from "../customHooks/useFetch";
 
-//PENDIENTES:
-//TENGO QUE AGREGAR LA VERIFICACION DE QUE LA COOKIE EXISTE EN TODO DONDE SE HAGAN PETICIONES,
-//CREAR EL FORMULARIO PARA AGREGAR PRODUCTOS A LA DB
-//ELIMINAR EL BOTON DE LOGOUT EN BASE A LA MEDIDA DE PANTALLA
+//TENGO QUE CORREGIR ERROES AL EXPIRAR EL USUARIO YA QUE AGREGUE EL USEFETCH
 
 const Home = () => {
-	const [listOfProducts, setListOfProducts] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [expired, setExpired] = useState(false);
+  const { obtainedData, isAuthorized, setIsAuthorized } = useFetch("/content/products");
+  const { admin, products } = obtainedData;
 
-	const navigate = useNavigate();
-	const { admin, products } = listOfProducts;
-
-	useEffect(() => {
-		(async () => {
-			try {
-				const res = await serverRequest.get('/content/products');
-				setListOfProducts(res.data);
-				setLoading(false);
-			} catch (error) {
-				console.log(error);
-				setLoading(false);
-				setExpired(true);
-				setTimeout(() => {
-					navigate('/');
-				}, 5000);
-			}
-		})();
-	}, []);
-
-	return (
-		<>
-			{expired ? (
-				<div className='text-center'>
-					<h1 className='text-danger'>You need login to see this page. Redirecting...</h1>
-				</div>
-			) : (
-				<>
-					{loading ? (
-						<div className='d-flex justify-content-center align-items-center flex-column center__spinner'>
-							<div className='spinner-border' role='status'>
-								<span className='visually-hidden'>Loading...</span>
-							</div>
-						</div>
-					) : (
-						<>
-							<Header admin={admin} />
-							<HomeContent listOfProducts={products} admin={admin} setExpired={setExpired} />
-						</>
-					)}
-				</>
-			)}
-		</>
-	);
+  return (
+    <>
+      {isAuthorized ? (
+        <>
+          <Header admin={admin} />
+          <HomeContent listOfProducts={products} admin={admin} setExpired={setIsAuthorized} />
+        </>
+      ) : (
+        <Unauthorized />
+      )}
+    </>
+  );
 };
 
 export default Home;

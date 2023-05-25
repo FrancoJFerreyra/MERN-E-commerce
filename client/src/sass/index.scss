@@ -69,6 +69,10 @@ body,
 	width: 100%;
 }
 
+.profile__card{
+	max-width: 18.75rem;
+}
+
 @include media-breakpoint-up(lg) {
 	.logout__btn {
 		display: block;
